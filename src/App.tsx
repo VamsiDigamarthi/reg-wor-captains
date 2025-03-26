@@ -2,9 +2,12 @@ import { ToastContainer } from "react-toastify";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Layout from "./Layout/Layout";
-import Dashboard from "./Features/ResWorCaptins/Screens/Dashboard";
-import DriverManagementScreen from "./Features/ResWorCaptins/Screens/DriverManagementScreen";
 import PaymentManagementScreen from "./Features/ResWorCaptins/Screens/PaymentManagementScreen";
+import NotificationScreen from "./Features/Notification/Screens/NotificationScreen";
+import ReportScreen from "./Features/Report/Screens/ReportScreen";
+import Dashboard from "./Features/DashBoard/Screens/Dashboard";
+import DriverManagementScreen from "./Features/DriverManagement/Screens/DriverManagementScreen";
+import LoginScreen from "./Features/Auth/Screens/LoginScreen";
 
 function App() {
   return (
@@ -21,6 +24,8 @@ function App() {
         pauseOnHover
       />
       <Routes>
+        <Route path="/login" element={<LoginScreen />} />
+
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
           <Route
@@ -31,6 +36,8 @@ function App() {
             path="/payment-management"
             element={<PaymentManagementScreen />}
           />
+          <Route path="/notifications" element={<NotificationScreen />} />
+          <Route path="/report" element={<ReportScreen />} />
         </Route>
       </Routes>
     </div>
