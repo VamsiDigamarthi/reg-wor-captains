@@ -58,12 +58,8 @@ const AadharUploadCard = () => {
       break;
   }
 
-  console.log("otpVerified", otpVerified);
-  console.log("aadharNumberDisable", aadharNumberDisable);
-  console.log("imageEnable", imageEnable);
-
   return (
-    <div className="w-full flex flex-col gap-4 items-center">
+    <div className="w-full flex flex-col gap-4 items-center border-b border-gray-400 pb-4">
       <div className="flex justify-between items-center w-full">
         <h3 className="text-[14px] font-poppings font-semibold">
           Aadhar Card Details

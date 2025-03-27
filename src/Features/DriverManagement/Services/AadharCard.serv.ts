@@ -188,3 +188,25 @@ export const handleUploadPanNumberOwnServer = async ({
     return false;
   }
 };
+
+export const uploadDlImages = async (
+  mobile: string,
+  images: { docFront: File | null; docBack: File | null }
+) => {
+  const formData = new FormData();
+
+  if (images.docFront) formData.append("license", images.docFront);
+  if (images.docBack) formData.append("licenseBack", images.docBack);
+
+  try {
+    await API.patch(`/captain/upload-security-image/${mobile}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return true;
+  } catch (error) {
+    console.error("Upload Failed", error);
+    return false;
+  }
+};
