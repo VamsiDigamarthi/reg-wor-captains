@@ -8,6 +8,7 @@ import {
   fetchWorUsers,
   setWorUser,
 } from "../../DashBoard/Redux/reCaptainSlice";
+import { drawerOpenCloseModalFunc } from "../Slice/drawerSlice";
 
 const servicesType = [
   "scooty",
@@ -48,6 +49,7 @@ const AddVehicleServices = () => {
     // localStorage.setItem("worUser", JSON.stringify(apiRes.user));
     // dispatch(setWorUser(apiRes.user));
     dispatch(fetchWorUsers());
+    dispatch(drawerOpenCloseModalFunc(false));
   };
 
   useEffect(() => {

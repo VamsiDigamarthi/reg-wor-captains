@@ -9,6 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../Redux/store";
 import { fetchWorUsers } from "../../DashBoard/Redux/reCaptainSlice";
 import { errorMsgApi } from "../../../Core/toast";
+import { drawerOpenCloseModalFunc } from "../Slice/drawerSlice";
+export type docsImageType = {
+  front: string | null;
+  back: string | null;
+  docFront: File | null;
+  docBack: File | null;
+};
 
 export const useAadharCardUploadHook = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -30,12 +37,7 @@ export const useAadharCardUploadHook = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [images, setImages] = useState<{
-    front: string | null;
-    back: string | null;
-    docFront: File | null;
-    docBack: File | null;
-  }>({
+  const [images, setImages] = useState<docsImageType>({
     front: null,
     back: null,
     docFront: null,
@@ -56,7 +58,6 @@ export const useAadharCardUploadHook = () => {
 
   const aadharGetOtp = async () => {
     setIsLoading(true);
-    console.log("aadhar api initially");
 
     const aadhaApi = await aadharNumberSendOtp({ aadharNumber: aadharNumber });
     setIsLoading(false);
@@ -145,6 +146,7 @@ export const useAadharCardUploadHook = () => {
     setImageLoader(false);
     if (success) {
       dispatch(fetchWorUsers());
+      dispatch(drawerOpenCloseModalFunc(false));
     }
   };
 
