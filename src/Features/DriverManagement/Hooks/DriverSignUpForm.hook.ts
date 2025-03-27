@@ -4,6 +4,7 @@ import { addRegCaptains } from "../Services/addCaptain.services";
 import { fetchWorUsers } from "../../DashBoard/Redux/reCaptainSlice";
 import { AppDispatch } from "../../../Redux/store";
 import { useDispatch } from "react-redux";
+import { drawerOpenCloseModalFunc } from "../Slice/drawerSlice";
 
 export type SignupDriverType = {
   name: string;
@@ -44,11 +45,13 @@ export const useDriverSignupFormHook = () => {
       setIsLoading(true);
       const data = await addRegCaptains(formData);
       setIsLoading(false);
+      console.log("data,,,", data.user.mobile);
 
       if (!data.status) return;
 
       localStorage.setItem("worUser", JSON.stringify(data?.user));
       dispatch(fetchWorUsers());
+      dispatch(drawerOpenCloseModalFunc(false));
     }
   };
 

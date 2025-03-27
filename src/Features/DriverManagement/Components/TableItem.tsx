@@ -14,6 +14,7 @@ const TableRow: FC<{
   const { worUser } = useSelector((state: RootState) => state.worUser);
 
   const handleSetWorUser = () => {
+    localStorage.setItem("worUser", JSON.stringify(row));
     dispatch(setWorUser(row));
   };
 
