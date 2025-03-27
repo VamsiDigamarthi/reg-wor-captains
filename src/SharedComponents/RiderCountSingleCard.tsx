@@ -1,6 +1,6 @@
 import { ArrowUpFromLine, LucideIcon } from "lucide-react";
-import IconWithBgCard from "../../../SharedComponents/IconWithBgCard";
 import { FC } from "react";
+import IconWithBgCard from "./IconWithBgCard";
 
 type RiderCountSingleCardType = {
   text: string;

@@ -25,7 +25,7 @@ const SidebarItem: FC<SidebarItemProps> = ({
           <p
             className={`${
               isActive ? "text-pink-500" : textColor
-            } font-roboto font-normal text-base`}
+            } font-roboto font-semibold text-base`}
           >
             {text}
           </p>

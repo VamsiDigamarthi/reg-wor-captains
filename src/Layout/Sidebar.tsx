@@ -1,5 +1,4 @@
 import SidebarItem from "../SharedComponents/SidebarItem";
-import SideBarProfileCard from "../SharedComponents/SideBarProfileCard";
 import {
   Bolt,
   LogOut,
@@ -8,6 +7,7 @@ import {
   SlidersHorizontal,
   SquareDashed,
 } from "lucide-react";
+import SideBarProfileCard from "../SharedComponents/SideBarProfileCard";
 const Sidebar = () => {
   return (
     <aside className="w-[230px] h-full bg-white flex flex-col items-center relative border-r border-gray-300">
@@ -25,7 +25,7 @@ const Sidebar = () => {
           navLink="payment-management"
         />
 
-        <SidebarItem Icon={SlidersHorizontal} text="Reports" navLink="/" />
+        <SidebarItem Icon={SlidersHorizontal} text="Reports" navLink="report" />
         <SidebarItem Icon={Bolt} text="Setting" navLink="/" />
       </div>
       <div className="absolute left-0 right-0 bottom-4 p-4">
