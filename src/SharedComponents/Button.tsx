@@ -25,7 +25,7 @@ const Button: FC<ButtonType> = ({
         color: textColor,
         border: isApplyBorder ? "1px solid gray" : "",
       }}
-      className="py-2 bg-blue-100 rounded-md px-4 flex justify-center items-center"
+      className="py-2 bg-blue-100 rounded-md px-4 flex justify-center items-center w-full"
     >
       {isLoading ? <ClockLoader color="#fff" size={30} /> : text}
     </button>

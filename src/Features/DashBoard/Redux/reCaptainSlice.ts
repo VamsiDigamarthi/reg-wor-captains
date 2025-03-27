@@ -31,7 +31,7 @@ export const fetchWorUsers = createAsyncThunk<
 >("userDashboard/fetchWorUsers", async (_, { rejectWithValue }) => {
   try {
     const response = await API.get("/reg-captain/captains");
-    console.log("reg-captin", response?.data);
+    // console.log("reg-captin", response?.data);
 
     return response.data as WorUser[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,9 +68,22 @@ const userDashboardSlice = createSlice({
           state.worUsers = action.payload;
 
           const storedUser = localStorage.getItem("worUser");
-          const parsedUser: WorUser | null = storedUser
+          // console.log("storedUser", storedUser);
+
+          let parsedUser: WorUser | null = storedUser
             ? JSON.parse(storedUser)
             : null;
+
+          // if (!storedUser) {
+          //   console.log("No user found in localStorage");
+          // } else {
+          //   try {
+          //     const parsedUser: WorUser = JSON.parse(storedUser);
+          //     // console.log("Parsed User:", parsedUser);
+          //   } catch (error) {
+          //     console.error("Error parsing JSON:", error);
+          //   }
+          // }
 
           if (parsedUser) {
             // Try to find the latest version of the stored user in the fetched data

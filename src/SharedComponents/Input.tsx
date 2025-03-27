@@ -34,6 +34,7 @@ const Input: FC<InputProps> = ({
         name={name}
         className="w-full h-[45px] border border-gray-400 rounded-md outline-none px-2 text-base"
         disabled={disabled}
+        style={{ color: disabled ? "gray" : "" }}
       />
 
       {error && (
