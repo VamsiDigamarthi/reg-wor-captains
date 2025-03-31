@@ -9,6 +9,7 @@ import {
 } from "../../DashBoard/Redux/reCaptainSlice";
 import { CopyPlus } from "lucide-react";
 import { drawerOpenCloseModalFunc } from "../Slice/drawerSlice";
+import { changeDriverListOrItemComponent } from "../Slice/isDisplayDriverListOrDriverDetails.slice";
 
 export const useDriverManagementScreenHook = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -18,12 +19,16 @@ export const useDriverManagementScreenHook = () => {
     dispatch(drawerOpenCloseModalFunc(true));
   };
 
+  const handleOpenProfile = () => {
+    dispatch(changeDriverListOrItemComponent());
+  };
+
   const columns: ColumnNameType<WorUser>[] = [
     {
       name: "Driver Name",
       width: "20%",
       render: (row) => (
-        <div className="flex items-center gap-2">
+        <div onClick={handleOpenProfile} className="flex items-center gap-2">
           <img
             src={row.profilePic || "default.jpg"}
             alt="Driver"
@@ -81,7 +86,7 @@ export const useDriverManagementScreenHook = () => {
     {
       name: "Total Earnings",
       width: "11%",
-      render: (row) => <span>{row.services.length * 100}$</span>,
+      render: (row) => <span>{0}$</span>,
     },
     {
       name: "Action",
@@ -93,31 +98,6 @@ export const useDriverManagementScreenHook = () => {
       ),
     },
   ];
-
-  // const data: WorUser[] = [
-  //   {
-  //     name: "John Doe",
-  //     mobile: "1234567890",
-  //     profilePic: null,
-  //     email: "john@example.com",
-  //     services: [
-  //       { rcNumber: "AB1234", makerModel: "Tesla Model S" },
-  //       { rcNumber: "XY5678", makerModel: "Toyota Prius" },
-  //     ],
-  //     createAt: "2025-03-26",
-  //   },
-  //   {
-  //     name: "kjhgfd Doe",
-  //     mobile: "oyfyknm",
-  //     profilePic: null,
-  //     email: "john@example.com",
-  //     services: [
-  //       { rcNumber: "AB1234", makerModel: "Tesla Model S" },
-  //       { rcNumber: "XY5678", makerModel: "Toyota Prius" },
-  //     ],
-  //     createAt: "2025-03-26",
-  //   },
-  // ];
 
   const fetchExstUser = () => {
     const storedUser = localStorage.getItem("worUser");

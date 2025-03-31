@@ -1,22 +1,41 @@
 import { FC } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../Redux/store";
+import { imageUrl } from "../../../Core/url";
 
 const DriverProfile = () => {
+  const { worUser } = useSelector((state: RootState) => state.worUser);
+
+  let profile = worUser?.profilePic
+    ? `${imageUrl}/${worUser?.profilePic}`
+    : null;
+
   return (
     <div className="w-full flex flex-col gap-4 py-2 border-b border-[#e5e7eb]">
       <div className="flex items-center gap-2">
-        <div className="w-[65px] h-[65px] bg-red-300 rounded-full"></div>
+        <div className="w-[65px] h-[65px] bg-red-300 rounded-full">
+          {profile && <img src={profile} alt="profile" />}
+        </div>
         <div>
-          <h2 className="text-xl font-roboto font-semibold ">Dharani</h2>
+          <h2 className="text-xl font-roboto font-semibold ">
+            {worUser?.name}
+          </h2>
           <span className="text-sm text-gray-400 ">#WR-92729</span>
         </div>
       </div>
       <div className="w-full flex items-center justify-between">
-        <NameCard name="Full Name" value="Seelam Dharani" />
-        <NameCard name="Date of Birth" value="07 Nov 2025" />
+        <NameCard name="Full Name" value={worUser?.name ?? ""} />
+        <NameCard name="Date of Birth" value={worUser?.dob ?? "0000-00-00"} />
       </div>
       <div className="w-full flex items-center justify-between">
-        <NameCard name="Contact Number" value="9086969888" />
-        <NameCard name="Email Address" value="dharani@gmail.com" />
+        <NameCard
+          name="Contact Number"
+          value={worUser?.mobile ?? "0000000000"}
+        />
+        <NameCard
+          name="Email Address"
+          value={worUser?.email ?? "dummy@gmail.com"}
+        />
       </div>
     </div>
   );

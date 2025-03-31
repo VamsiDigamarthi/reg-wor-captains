@@ -210,3 +210,95 @@ export const uploadDlImages = async (
     return false;
   }
 };
+
+export const uploadVehicleImage = async (
+  mobile: string,
+  images: {
+    docsFront: File | null;
+    docsBack: File | null;
+    docsRight: File | null;
+    docsLeft: File | null;
+    docsNumberPlate: File | null;
+    docsHelmet: File | null;
+  },
+  serviceType: string
+) => {
+  const formData = new FormData();
+
+  if (images.docsFront) formData.append("vehicleFrontImage", images.docsFront);
+  if (images.docsBack) formData.append("vehicleBackImage", images.docsBack);
+
+  if (images.docsRight) formData.append("vehicleRightImage", images.docsRight);
+
+  if (images.docsLeft) formData.append("vehicleLeftImage", images.docsLeft);
+
+  if (images.docsNumberPlate)
+    formData.append("vehicleNumberPlate", images.docsNumberPlate);
+
+  if (images.docsHelmet)
+    formData.append("vehicleHelmetImage", images.docsHelmet);
+
+  formData.append("serviceType", serviceType);
+
+  try {
+    await API.patch(`/auth/update-rc-details/${mobile}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return true;
+  } catch (error) {
+    console.error("Upload Failed", error);
+    return false;
+  }
+};
+
+export const certificationUpload = async (
+  mobile: string,
+  images: {
+    docFront: File | null;
+  },
+  serviceType: string
+) => {
+  const formData = new FormData();
+
+  if (images.docFront) formData.append("fitnessCer", images.docFront);
+
+  formData.append("serviceType", serviceType);
+  try {
+    await API.patch(`/auth/update-rc-details/${mobile}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return true;
+  } catch (error) {
+    console.error("Upload Failed", error);
+    return false;
+  }
+};
+
+export const insuranceUpload = async (
+  mobile: string,
+  images: {
+    docFront: File | null;
+  },
+  serviceType: string
+) => {
+  const formData = new FormData();
+
+  if (images.docFront) formData.append("insuranceImg", images.docFront);
+
+  formData.append("serviceType", serviceType);
+  try {
+    await API.patch(`/auth/update-rc-details/${mobile}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return true;
+  } catch (error) {
+    console.error("Upload Failed", error);
+    return false;
+  }
+};
