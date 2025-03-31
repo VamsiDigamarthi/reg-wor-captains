@@ -11,6 +11,9 @@ interface UserDashboardState {
     approvedUsers: number;
     pendingUsers: number;
   };
+  totalPages: number;
+  currentPage: number;
+  totalCaptains: number;
 }
 
 const initialState: UserDashboardState = {
@@ -22,24 +25,38 @@ const initialState: UserDashboardState = {
   },
   loading: false,
   error: null,
+  totalPages: 0,
+  currentPage: 0,
+  totalCaptains: 0,
 };
 
+// ✅ Corrected Type Definition
 export const fetchWorUsers = createAsyncThunk<
-  WorUser[],
-  void,
-  { rejectValue: string }
->("userDashboard/fetchWorUsers", async (_, { rejectWithValue }) => {
-  try {
-    const response = await API.get("/reg-captain/captains");
-    // console.log("reg-captin", response?.data);
+  {
+    data: WorUser[];
+    totalPages: number;
+    currentPage: number;
+    totalCaptains: number;
+  }, // Return type
+  { page: number; limit: number }, // Arguments type
+  { rejectValue: string } // Rejection type
+>(
+  "userDashboard/fetchWorUsers",
+  async ({ page, limit }, { rejectWithValue }) => {
+    try {
+      const response = await API.get(
+        `/reg-captain/captains?page=${page}&limit=${limit}`
+      );
 
-    return response.data as WorUser[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.error("Error fetching wor-user data:", error);
-    return rejectWithValue(error.response?.data || "Wor User Fetching Failed");
+      return response.data;
+    } catch (error: any) {
+      console.error("Error fetching wor-user data:", error);
+      return rejectWithValue(
+        error.response?.data || "Wor User Fetching Failed"
+      );
+    }
   }
-});
+);
 
 const userDashboardSlice = createSlice({
   name: "userDashboard",
@@ -64,47 +81,39 @@ const userDashboardSlice = createSlice({
       })
       .addCase(
         fetchWorUsers.fulfilled,
-        (state, action: PayloadAction<WorUser[]>) => {
-          state.worUsers = action.payload;
+        (
+          state,
+          action: PayloadAction<{
+            data: WorUser[];
+            totalPages: number;
+            currentPage: number;
+            totalCaptains: number;
+          }>
+        ) => {
+          state.worUsers = action.payload.data; // ✅ Ensure data is correctly accessed
+          state.totalPages = action.payload.totalPages;
+          state.currentPage = action.payload.currentPage;
+          state.totalCaptains = action.payload.totalCaptains;
 
           const storedUser = localStorage.getItem("worUser");
-          // console.log("storedUser", storedUser);
-
           let parsedUser: WorUser | null = storedUser
             ? JSON.parse(storedUser)
             : null;
 
-          // if (!storedUser) {
-          //   console.log("No user found in localStorage");
-          // } else {
-          //   try {
-          //     const parsedUser: WorUser = JSON.parse(storedUser);
-          //     // console.log("Parsed User:", parsedUser);
-          //   } catch (error) {
-          //     console.error("Error parsing JSON:", error);
-          //   }
-          // }
-
           if (parsedUser) {
-            // Try to find the latest version of the stored user in the fetched data
-            const updatedUser = action.payload.find(
+            const updatedUser = action.payload.data.find(
               (user) => user._id === parsedUser._id
             );
 
-            if (updatedUser) {
-              state.worUser = updatedUser;
-            } else {
-              state.worUser = parsedUser;
-            }
+            state.worUser = updatedUser || parsedUser;
           } else {
             state.worUser =
-              action.payload.find((user) => !user.userVerified) ?? null;
+              action.payload.data.find((user) => !user.userVerified) ?? null;
           }
 
           state.loading = false;
         }
       )
-
       .addCase(fetchWorUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch wor users";
@@ -113,5 +122,4 @@ const userDashboardSlice = createSlice({
 });
 
 export const { setVerifiedUsers, setWorUser } = userDashboardSlice.actions;
-
 export default userDashboardSlice.reducer;

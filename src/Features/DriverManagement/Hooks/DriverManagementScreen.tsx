@@ -12,8 +12,12 @@ import { drawerOpenCloseModalFunc } from "../Slice/drawerSlice";
 import { changeDriverListOrItemComponent } from "../Slice/isDisplayDriverListOrDriverDetails.slice";
 
 export const useDriverManagementScreenHook = () => {
+  const itemsPerPage = 8;
+
   const dispatch: AppDispatch = useDispatch();
-  const { worUsers } = useSelector((state: RootState) => state.worUser);
+  const { worUsers, totalPages, currentPage, loading } = useSelector(
+    (state: RootState) => state.worUser
+  );
   const [filterUser, setFilterUser] = useState<WorUser[]>([]);
   const handleAction = () => {
     dispatch(drawerOpenCloseModalFunc(true));
@@ -69,11 +73,11 @@ export const useDriverManagementScreenHook = () => {
           {row.services.map((service, idx) => (
             <span
               key={idx}
-              className={`text-base text-black font-roboto ${
+              className={`text-sm text-black font-roboto ${
                 idx === 1 ? "-mt-1 text-sm text-gray-500" : ""
               }`}
             >
-              {service.makerModel || "N/A"}
+              {service.makerModel?.slice(0, 10)}
             </span>
           ))}
         </div>
@@ -118,7 +122,7 @@ export const useDriverManagementScreenHook = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchWorUsers());
+    dispatch(fetchWorUsers({ page: 1, limit: itemsPerPage }));
   }, []);
 
   useEffect(() => {
@@ -129,10 +133,8 @@ export const useDriverManagementScreenHook = () => {
   }, [worUsers]);
 
   const searchDrivers = (text: string) => {
-    console.log("text", text);
-
     if (!text.trim()) {
-      setFilterUser(worUsers); // Return all users if search text is empty
+      setFilterUser(worUsers);
     }
     setFilterUser(
       worUsers.filter((user) =>
@@ -144,7 +146,6 @@ export const useDriverManagementScreenHook = () => {
   };
 
   // select ON-DUTTY or OFF-DUTTY
-
   const handleChangeOnAndOfDutty = (type: string) => {
     if (type === "All") {
       setFilterUser(worUsers);
@@ -155,10 +156,18 @@ export const useDriverManagementScreenHook = () => {
     }
   };
 
+  const handlePageClick = (event: { selected: number }) => {
+    dispatch(fetchWorUsers({ page: event.selected + 1, limit: itemsPerPage }));
+  };
+
   return {
     columns,
     data: filterUser,
     searchDrivers,
     handleChangeOnAndOfDutty,
+    totalPages,
+    currentPage,
+    handlePageClick,
+    loading,
   };
 };
