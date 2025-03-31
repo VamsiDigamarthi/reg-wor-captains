@@ -5,15 +5,20 @@ type UploadImageCardType = {
   name: string;
   imageUlr: string;
   isVerified?: string;
+  onClick: () => void;
 };
 
 const UploadImageCard: FC<UploadImageCardType> = ({
   name,
   imageUlr,
   isVerified,
+  onClick,
 }) => {
   return (
-    <div className="w-[250px] h-[120px] bg-white rounded-md border border-borderColor px-2 py-2 pb-3 flex flex-col justify-between cursor-pointer">
+    <div
+      onClick={onClick}
+      className="w-[250px] h-[120px] bg-white rounded-md border border-borderColor px-2 py-2 pb-3 flex flex-col justify-between cursor-pointer"
+    >
       <div className="flex justify-between items-center w-full">
         <span className="text-sm text-gray-400 font-roboto">{name}</span>
         {isVerified === "pending" && <Clock7 size={18} color="gray" />}

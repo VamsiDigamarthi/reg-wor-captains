@@ -1,11 +1,19 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UploadImageCard from "../../ResWorCaptins/Components/UploadImageCard";
-import { RootState } from "../../../Redux/store";
+import { AppDispatch, RootState } from "../../../Redux/store";
 import { imageUrl } from "../../../Core/url";
 import { useEffect, useState } from "react";
+import DocsImagePreviewModa from "../Modals/DocsImagePreviewModa";
+import {
+  openModal,
+  openSpecificDocsModalType,
+} from "../../../Redux/modalFeatureSlice";
 
 const UploadImageDocs = () => {
+  const dispatch: AppDispatch = useDispatch();
+
   const { worUser } = useSelector((state: RootState) => state.worUser);
+  const { activeModal } = useSelector((state: RootState) => state.modal);
 
   const [docsVerified, setDocsVerified] = useState({
     aadhar: "initiall",
@@ -126,45 +134,61 @@ const UploadImageDocs = () => {
     }
   }, [worUser]);
 
-  return (
-    <div className="flex flex-wrap gap-4">
-      <UploadImageCard
-        name="Aadhar Card"
-        imageUlr={aadharImage ?? ""}
-        isVerified={docsVerified?.aadhar}
-      />
-      <UploadImageCard
-        imageUlr={dlImage ?? ""}
-        name="Dl Card"
-        isVerified={docsVerified?.dl}
-      />
-      <UploadImageCard
-        imageUlr={rcImage ?? ""}
-        name="Rc Card"
-        isVerified={docsVerified?.rc}
-      />
-      <UploadImageCard
-        imageUlr={vehicleImage ?? ""}
-        name="Vehicle Image"
-        isVerified={docsVerified?.vehicleImage}
-      />
+  const handleOpenDocsDetailsModal = (type: string) => {
+    dispatch(openModal("Docs Image"));
+    dispatch(openSpecificDocsModalType(type));
+  };
 
-      {(worUser?.services?.[0]?.serviceType === "car" ||
-        worUser?.services?.[0]?.serviceType === "wor-premium") && (
-        <>
-          <UploadImageCard
-            imageUlr={insuranceImage ?? ""}
-            name="Insurance"
-            isVerified={docsVerified?.insurance}
-          />
-          <UploadImageCard
-            imageUlr={fitCer ?? ""}
-            name="Certificate of fitness/PuC"
-            isVerified={docsVerified?.fitCertificate}
-          />
-        </>
-      )}
-    </div>
+  return (
+    <>
+      <div className="flex flex-wrap gap-4">
+        <UploadImageCard
+          name="Aadhar Card"
+          imageUlr={aadharImage ?? ""}
+          isVerified={docsVerified?.aadhar}
+          onClick={() => handleOpenDocsDetailsModal("Aadhar Card")}
+        />
+        <UploadImageCard
+          imageUlr={dlImage ?? ""}
+          name="Dl Card"
+          isVerified={docsVerified?.dl}
+          onClick={() => handleOpenDocsDetailsModal("Dl Card")}
+        />
+        <UploadImageCard
+          imageUlr={rcImage ?? ""}
+          name="Rc Card"
+          isVerified={docsVerified?.rc}
+          onClick={() => handleOpenDocsDetailsModal("Rc Card")}
+        />
+        <UploadImageCard
+          imageUlr={vehicleImage ?? ""}
+          name="Vehicle Image"
+          isVerified={docsVerified?.vehicleImage}
+          onClick={() => handleOpenDocsDetailsModal("Vehicle Image")}
+        />
+
+        {/* {(worUser?.services?.[0]?.serviceType === "car" ||
+          worUser?.services?.[0]?.serviceType === "wor-premium") && (
+          <> */}
+        <UploadImageCard
+          imageUlr={insuranceImage ?? ""}
+          name="Insurance"
+          isVerified={docsVerified?.insurance}
+          onClick={() => handleOpenDocsDetailsModal("Insurance")}
+        />
+        <UploadImageCard
+          imageUlr={fitCer ?? ""}
+          name="Certificate of fitness/PuC"
+          isVerified={docsVerified?.fitCertificate}
+          onClick={() =>
+            handleOpenDocsDetailsModal("Certificate of fitness/PuC")
+          }
+        />
+        {/* </>
+        )} */}
+      </div>
+      {activeModal === "Docs Image" && <DocsImagePreviewModa />}
+    </>
   );
 };
 

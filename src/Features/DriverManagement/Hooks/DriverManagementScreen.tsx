@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { WorUser } from "../../DashBoard/Types/regCaptain.type";
 import { ColumnNameType } from "../types/DriverModal.type";
 import { AppDispatch, RootState } from "../../../Redux/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   fetchWorUsers,
   setWorUser,
@@ -14,7 +14,7 @@ import { changeDriverListOrItemComponent } from "../Slice/isDisplayDriverListOrD
 export const useDriverManagementScreenHook = () => {
   const dispatch: AppDispatch = useDispatch();
   const { worUsers } = useSelector((state: RootState) => state.worUser);
-
+  const [filterUser, setFilterUser] = useState<WorUser[]>([]);
   const handleAction = () => {
     dispatch(drawerOpenCloseModalFunc(true));
   };
@@ -36,9 +36,15 @@ export const useDriverManagementScreenHook = () => {
           />
           <div className="flex flex-col">
             <span className="text-base text-black font-roboto">{row.name}</span>
-            <span className="text-sm text-gray-500 font-roboto -mt-1">
-              {row.mobile}
-            </span>
+            <div className="flex items-center gap-1">
+              <span className="text-sm text-gray-500 font-roboto -mt-1">
+                {row.mobile}
+              </span>
+              <span
+                style={{ backgroundColor: row?.onDuty ? "green" : "red" }}
+                className="w-[10px] h-[10px] rounded-full -mt-1"
+              ></span>
+            </div>
           </div>
         </div>
       ),
@@ -116,11 +122,43 @@ export const useDriverManagementScreenHook = () => {
   }, []);
 
   useEffect(() => {
-    worUsers && fetchExstUser();
+    if (worUsers) {
+      fetchExstUser();
+      setFilterUser(worUsers);
+    }
   }, [worUsers]);
+
+  const searchDrivers = (text: string) => {
+    console.log("text", text);
+
+    if (!text.trim()) {
+      setFilterUser(worUsers); // Return all users if search text is empty
+    }
+    setFilterUser(
+      worUsers.filter((user) =>
+        [user.name, user.mobile, user.email].some((field) =>
+          field?.toLowerCase().includes(text.toLowerCase())
+        )
+      )
+    );
+  };
+
+  // select ON-DUTTY or OFF-DUTTY
+
+  const handleChangeOnAndOfDutty = (type: string) => {
+    if (type === "All") {
+      setFilterUser(worUsers);
+    } else if (type === "ON-Dutty") {
+      setFilterUser(worUsers?.filter((user) => user.onDuty === true));
+    } else if (type === "OFF-Dutty") {
+      setFilterUser(worUsers?.filter((user) => user.onDuty === false));
+    }
+  };
 
   return {
     columns,
-    data: worUsers,
+    data: filterUser,
+    searchDrivers,
+    handleChangeOnAndOfDutty,
   };
 };

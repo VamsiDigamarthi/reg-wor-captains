@@ -4,10 +4,12 @@ import TableFilterCard from "../Components/TableFilterCard";
 import { useDriverManagementScreenHook } from "../Hooks/DriverManagementScreen";
 import { RootState } from "../../../Redux/store";
 import DriverProfileScreen from "./DriverProfileScreen";
+import NoDriver from "../Components/NoDriver";
 // import DriverProfileScreen from "./DriverProfileScreen";
 
 const DriverManagementScreen = () => {
-  const { columns, data } = useDriverManagementScreenHook();
+  const { columns, data, searchDrivers, handleChangeOnAndOfDutty } =
+    useDriverManagementScreenHook();
 
   const { isDisplayDriverListOrItem } = useSelector(
     (state: RootState) => state.isDisplayDriverListorItem
@@ -22,8 +24,14 @@ const DriverManagementScreen = () => {
           <TableFilterCard
             text="Drivers Management"
             subtext="Manage Your Ride Details"
+            searchDrivers={searchDrivers}
+            changeOnOffDutty={handleChangeOnAndOfDutty}
           />
-          <Table columns={columns} data={data} />
+          {data?.length ? (
+            <Table columns={columns} data={data} />
+          ) : (
+            <NoDriver />
+          )}
         </div>
       )}
     </div>
