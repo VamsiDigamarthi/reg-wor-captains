@@ -1,1 +1,1 @@
-export const selectTagData = ["Active", "Pending", "In-Active"];
+export const selectTagData = ["All", "ON-Dutty", "OFF-Dutty"];

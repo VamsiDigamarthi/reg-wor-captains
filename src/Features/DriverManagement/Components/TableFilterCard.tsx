@@ -13,9 +13,16 @@ import { drawerOpenCloseModalFunc } from "../Slice/drawerSlice";
 type TableFilterCardType = {
   text: string;
   subtext: string;
+  searchDrivers: (text: string) => void;
+  changeOnOffDutty: (type: string) => void;
 };
 
-const TableFilterCard: FC<TableFilterCardType> = ({ subtext, text }) => {
+const TableFilterCard: FC<TableFilterCardType> = ({
+  subtext,
+  text,
+  searchDrivers,
+  changeOnOffDutty,
+}) => {
   const dispatch: AppDispatch = useDispatch();
 
   const handleOpenDrawer = () => {
@@ -31,10 +38,10 @@ const TableFilterCard: FC<TableFilterCardType> = ({ subtext, text }) => {
         <span className="text-gray-500 text-[14px] font-roboto">{subtext}</span>
       </div>
       <div className="flex items-center gap-4">
-        <SearchCard />
+        <SearchCard onChange={searchDrivers} />
         <SelectTag
           firstOptionText="Select Status"
-          onChange={() => {}}
+          onChange={changeOnOffDutty}
           options={selectTagData}
         />
         <IconButton
