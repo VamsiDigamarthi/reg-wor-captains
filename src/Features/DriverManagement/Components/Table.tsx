@@ -12,7 +12,7 @@ type TableTypes = {
 
 const Table: FC<TableTypes> = ({ columns, data }) => {
   return (
-    <div className="w-full h-[85%] shadow-secondShadow rounded-md">
+    <div className="w-full h-[90%] shadow-secondShadow rounded-md">
       <TableHeader columns={columns} />
       {data.map((row, index) => (
         <TableRow key={index} row={row} columns={columns} />
