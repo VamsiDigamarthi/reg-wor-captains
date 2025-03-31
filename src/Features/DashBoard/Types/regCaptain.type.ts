@@ -5,6 +5,7 @@ export interface WorUser {
   name: string;
   mobile: string;
   role: string;
+  dob: string | null;
   onDuty: boolean;
   holdingCaptain: boolean;
   profilePic: string | null;
@@ -79,6 +80,10 @@ export interface WorUser {
     vehicleNumberPlate: string | null;
     vehicleHelmetImage: string | null;
     vehicleImageVerification: StatusCard | null;
+    // fit certification
+    insuranceImg: string | null;
+    insuranceVerification: string | null;
+    fitnessCer: string | null;
   }[];
   fbtoken: string;
   averageRating: number;

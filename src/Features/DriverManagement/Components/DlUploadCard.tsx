@@ -47,7 +47,7 @@ const DlUploadCard = () => {
   console.log("dlNumberDisable", dlNumberDisable);
 
   return (
-    <div className="w-full flex flex-col gap-4 items-center">
+    <div className="w-full flex flex-col gap-4 items-center border-b border-gray-500 pb-5">
       <div className="flex justify-between items-center w-full">
         <h3 className="text-lg font-poppings font-semibold">Dl Card Details</h3>
         <span
